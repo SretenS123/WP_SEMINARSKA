@@ -1,0 +1,88 @@
+<th:block xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.w3.org/1999/xhtml" >
+
+
+    <!--SECTION-->
+    <section class="jumbotron text-center" id="jumbotron-events"   xmlns:th="http://www.thymeleaf.org" >
+        <div  class="container">
+                <h1 class="jumbotron-heading" >ALL EVENTS</h1>
+            <form th:method="GET" th:action="@{'/events'}" class="form-inline  mt-5 my-lg-0">
+                <div id="Search" class="input-group input-group-lg w-100">
+                    <input name="searchKey" type="text" class="form-control "  aria-label="Small"
+                           aria-describedby="inputGroup-sizing-sm"
+                           placeholder="Search Events">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-secondary ">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <div class="row">
+        <div class="col-md-3">
+                <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-info btn-lg m-2 nav_additional" href="/users">SEE USERS</a>
+        </div>
+        <div class="offset-md-6 col-md-3 text-right ">
+            <a sec:authorize="isAuthenticated()" class="btn btn-warning btn-lg m-2 mr-4 nav_additional" href="/myTickets">MY TICKETS</a>
+        </div>
+    </div>
+
+
+
+    <div class="container mb-5 ">
+
+        <div  class="row">
+            <th:block >
+                <div class="col-md-4 mt-3" th:if="${eventList.size()>0}" th:each="event : ${eventList}">
+                    <div  class="card" style="width: 18rem;">
+                        <img  class="card-img-top" style="height: 170px;" th:src="${event.getImageUrl()}" >
+                        <div class="card-body">
+                            <p class="card-text" th:text="${ event.getDate()}"></p>
+                            <h5 class="card-title" th:text="${event.getTitle()}"></h5>
+                            <p class="card-text" th:text="${'Event description: '+event.getDescription()}"></p>
+                            <p class="card-text" th:text="${'Location: '+ event.getLocation().getName()}"></p>
+                            <p class="card-text" th:text="${'Type: '+event.getEventType()}"></p>
+
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li th:if= "${event.soldOut== false}" class="list-group-item" style="background-color: cornflowerblue;">
+                                <p  style="color: white;" th:text="${'Tickets left: '+event.getTicketsLeft()}"></p>
+                            </li>
+                            <li  th:if= "${event.soldOut== true}" class="list-group-item" style="background-color: red;">
+                                <p  style="color: white;" th:text="${'SOLD OUT!'}"></p>
+                            </li>
+                            <li class="list-group-item">
+                                <form th:method="POST" th:action="@{'/shopping-cart/add-event/{id}' (id=${event.getId()})}"
+                                      sec:authorize="isAuthenticated()">
+                                    <br>
+                                    <button th:if="${event.soldOut== false}" type="submit" class="btn btn-sm btn-success w-100">Book Now</button>
+                                </form>
+                            </li>
+                        </ul>
+                        <div class="card-body" >
+                            <a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')" th:href="@{'/events/edit/{Id}' (Id=${event.getId()})}" class="card-link btn btn-md btn-info"><i class="fas fa-edit"></i></a>
+                            <a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')" th:href="@{'/events/delete/{Id}' (Id=${event.getId()})}" class="card-link btn btn-md btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            <a  th:href="@{'/events/delete/{Id}' (Id=${event.getId()})}" class="card-link btn btn-md btn-success"><i class="fas fa-comments"></i></a>
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+
+            </th:block>
+
+        </div>
+        <div class="col my-3">
+            <div class="row">
+                <div class="col-sm-12 col-md-12" >
+                    <a type="button" href="/events/add" class="btn btn-block btn-dark">Add new event</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</th:block>
