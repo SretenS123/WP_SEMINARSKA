@@ -72,6 +72,8 @@ public class ShoppingCartImpl implements ShoppingCartService {
         User user = this.userRepository.findById(userId).orElseThrow(()->new UserIdNotFoundException(userId));
         ShoppingCart shoppingCart = this.getActiveShoppingCart(userId);
         Event event = this.eventRepository.findById(eventId).orElseThrow(()->new EventIdNotExistException(eventId));
+        if(event.getTicketsLeft()<quantity)
+            throw new InvalidTicketsException();
         shoppingCart.getEvents().remove(event);
         Integer price = event.getPrice();
         for(var i=0;i<quantity;i++)
@@ -86,5 +88,7 @@ public class ShoppingCartImpl implements ShoppingCartService {
         event.setTicketsLeft(ticketsLeft);
         this.eventRepository.save(event);
         return shoppingCart;
+
+
     }
 }

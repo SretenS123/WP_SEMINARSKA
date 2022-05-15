@@ -9,7 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User register(String name, String surname, String phoneNumber, String email, String password, String reTypePassword, String country, Role role) {
+    public User register(String name, String surname, String phoneNumber, String email, String imageUrl, String password, String reTypePassword, String country, Role role) {
         if(name==null || name.isEmpty())
             throw new InvalidArgumentsException();
         if(!password.equals(reTypePassword))
@@ -49,13 +53,39 @@ public class UserServiceImpl implements UserService {
         {
             throw new EmailAlreadyExistsException(email);
         }
-        User u = new User(name,surname,phoneNumber,email,passwordEncoder.encode(password),country,role);
+        User u = new User(name,surname,phoneNumber,email,imageUrl,passwordEncoder.encode(password),country,role);
         userRepository.save(u);
         return u;
     }
 
     @Override
-    public User edit(Long id, String name, String surname, String phoneNumber, String email, String password, String reTypePassword, String country, Role role) {
+    public User register1(String name, String surname, String phoneNumber, String email, MultipartFile file, String password, String reTypePassword, String country, Role role) {
+        if(name==null || name.isEmpty())
+            throw new InvalidArgumentsException();
+        if(!password.equals(reTypePassword))
+            throw new PassworDoNotMatchException();
+        if(this.userRepository.findByEmail(email).isPresent())
+        {
+            throw new EmailAlreadyExistsException(email);
+        }
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        if(fileName.contains(".."))
+        {
+            System.out.println("Not a proper file!");
+        }
+        String imageUrl = null;
+        try {
+            imageUrl = Base64.getEncoder().encodeToString(file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        User u = new User(name,surname,phoneNumber,email,imageUrl,passwordEncoder.encode(password),country,role);
+        userRepository.save(u);
+        return u;
+    }
+
+    @Override
+    public User edit(Long id, String name, String surname, String phoneNumber, String email,String imageUrl, String password, String country) {
         User user = this.userRepository.findById(id).orElseThrow(()->new UserIdNotFoundException(id));
         user.setName(name);
         user.setSurname(surname);
@@ -63,7 +93,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setPassword(password);
         user.setCountry(country);
-        user.setRole(role);
+        user.setImageUrl(imageUrl);
         return this.userRepository.save(user);
 
 

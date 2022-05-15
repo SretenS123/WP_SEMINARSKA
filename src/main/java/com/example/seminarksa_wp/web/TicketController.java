@@ -29,7 +29,13 @@ public class TicketController {
     {
         User user =(User) authentication.getPrincipal();
         List<Ticket> tickets = this.ticketService.findAllByUser(user.getId());
+        Integer price = 0;
+        for(Ticket ticket : tickets)
+        {
+            price = price + ticket.getPrice();
+        }
         model.addAttribute("tickets",tickets);
+        model.addAttribute("price",price);
         model.addAttribute("bodyContent","myTickets");
         return "master-template";
     }

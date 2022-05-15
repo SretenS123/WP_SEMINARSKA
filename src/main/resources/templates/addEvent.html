@@ -7,29 +7,29 @@
     </section>
     <div class="container mb-5">
         <div class="row">
-            <div class="col-md-5">
+            <div style="background-color: lightgrey" class="col-md-5 m-auto p-5">
                 <form th:method="POST" th:action="@{'/events/{id}' (id=${event?.getId()})}" >
                     <div class="form-group">
-                        <label for="title">Title</label> <input name="title" type="text" class="form-control" id="title" placeholder="Enter  title"  th:value="${event} != null ? ${event.getTitle()} : ''  " required>
+                        <label style="font-size: 20px;" for="title">Title</label> <input name="title" type="text" class="form-control" id="title" placeholder="Enter  title"  th:value="${event} != null ? ${event.getTitle()} : ''  " required>
                     </div>
                     <div class="form-group">
-                        <label for="description">Description</label> <input name="description" type="text" class="form-control" id="description" placeholder="Enter  description"  th:value="${event} != null ? ${event.getDescription()} : ''  " required>
+                        <label style="font-size: 20px;" for="description">Description</label> <input name="description" type="text" class="form-control" id="description" placeholder="Enter  description"  th:value="${event} != null ? ${event.getDescription()} : ''  " required>
                     </div>
                     <div class="form-group">
-                        <label for="date">Date</label> <input name="date" type="date" class="form-control" id="date" placeholder="Enter  date"  th:value="${event} != null ? ${event.getDate()} : ''  " required>
+                        <label style="font-size: 20px;" for="date">Date</label> <input name="date" type="date" class="form-control" id="date" placeholder="Enter  date"  th:value="${event} != null ? ${event.getDate()} : ''  " required>
                     </div>
                     <div class="form-group">
-                        <label for="price">Price</label> <input name="price" type="number" class="form-control" id="price" placeholder="Enter  price"  th:value="${event} != null ? ${event.getPrice()} : ''  " required>
+                        <label style="font-size: 20px;" for="price">Price</label> <input name="price" type="number" class="form-control" id="price" placeholder="Enter  price"  th:value="${event} != null ? ${event.getPrice()} : ''  " required>
                     </div>
                     <div class="form-group">
-                        <label for="ticketsLeft">Tickets Left</label> <input name="ticketsLeft" type="number" class="form-control" id="ticketsLeft" placeholder="Enter  ticketsLeft"  th:value="${event} != null ? ${event.getTicketsLeft()} : ''  " required>
+                        <label style="font-size: 20px;" for="ticketsLeft">Tickets Left</label> <input name="ticketsLeft" type="number" class="form-control" id="ticketsLeft" placeholder="Enter  ticketsLeft"  th:value="${event} != null ? ${event.getTicketsLeft()} : ''  " required>
                     </div>
                     <div class="form-group">
-                        <label for="imageUrl">Image Url</label> <input name="imageUrl" type="text" class="form-control" id="imageUrl" placeholder="Enter  imageUrl"  th:value="${event} != null ? ${event.getImageUrl()} : ''  " required>
+                        <label style="font-size: 20px;" for="imageUrl">Image Url</label> <input name="imageUrl" type="text" class="form-control" id="imageUrl" placeholder="Enter  imageUrl"  th:value="${event} != null ? ${event.getImageUrl()} : ''  " required>
                     </div>
 
                     <div class="form-group">
-                        <label for="eventType">Type</label>
+                        <label style="font-size: 20px;" for="eventType">Type</label>
                         <select name="eventType" id="eventType" class="form-control">
                             <option th:if="${event}!=null"
                                     th:selected="${event.getEventType()!=null && event.getEventType().toString() == type.toString()}"
@@ -45,7 +45,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="location">Location (Venue)</label>
+                        <label style="font-size: 20px;" for="location">Location (Venue)</label>
                         <select name="venueId" id="location" class="form-control">
                             <option th:if="${event}!=null"
                                     th:selected="${event.getLocation()!=null && event.getLocation().getId() == venue.getId()}"
@@ -62,7 +62,7 @@
                     </div>
 
 
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
                     <a type="button" class="btn btn-primary" href="/events">Back</a>
 
                 </form>

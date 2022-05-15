@@ -1,6 +1,4 @@
 
-
-
 $(document).ready(function() {
     $("#taable").DataTable({
         'aoColumnDefs': [{
@@ -9,9 +7,12 @@ $(document).ready(function() {
         }]
     });
 
+
     $('selector').css('cursor', 'pointer');
 
     $("#Search").hover(function (){
+        d3.selectAll("p").style("background-color","grey !important");
+
         $(this).animate({
             opacity: "100%",
             marginTop: "+=10px"
@@ -67,5 +68,9 @@ $(document).ready(function() {
         $(this).animate({
             marginTop:"-=10px"
         },300)
+    })
+    $("#show_forma").click(function (){
+        $("#forma").show(500);
+        console.log("Stisna!");
     })
 })

@@ -22,6 +22,8 @@ public class User  implements UserDetails {
     private String name;
 
     private String surname;
+    @Lob
+    private String imageUrl;
 
     private String phoneNumber;
 
@@ -49,7 +51,7 @@ public class User  implements UserDetails {
     public User() {
     }
 
-    public User(String name, String surname, String phoneNumber, String email, String password, String country, Role role) {
+    public User(String name, String surname, String phoneNumber, String email, String imageUrl, String password, String country, Role role) {
         this.name = name;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
@@ -58,6 +60,7 @@ public class User  implements UserDetails {
         this.country = country;
         this.role = role;
         this.tickets = new ArrayList<>();
+        this.imageUrl = imageUrl;
     }
 
     @Override

@@ -37,8 +37,8 @@ public class Event {
     private Integer ticketsLeft;
     @ManyToMany
     private List<User> users;
-
-
+    @OneToMany(mappedBy = "event",fetch = FetchType.EAGER)
+    private List<Rating> ratings;
 
     public Event() {
     }

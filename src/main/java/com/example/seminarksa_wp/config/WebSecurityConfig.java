@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/h2", "/home", "/register","/css/**","/img/**","/js/**","/events","/assets/**").permitAll()
+                .antMatchers("/", "/h2", "/home", "/register","/static/**","/css/**","/img/**","/js/**","/events","/assets/**").permitAll()
 //                .antMatchers("/naracki/**").hasRole("SOPSTVENIK")
 //                .antMatchers("/avtomobili/**").hasRole("KUPUVAC")
                 .anyRequest().authenticated()

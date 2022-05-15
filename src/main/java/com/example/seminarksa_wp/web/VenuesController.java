@@ -55,7 +55,7 @@ public class VenuesController {
         types.add(EventType.NIGHTCLUB);
         types.add(EventType.CONCERT);
         types.add(EventType.CINEMA);
-        types.add(EventType.SHOW);
+
         types.add(EventType.LIVE_MUSIC);
         model.addAttribute("bodyContent","addVenue");
         model.addAttribute("types",types);
@@ -63,7 +63,7 @@ public class VenuesController {
         return "master-template";
 
     }
-    @PostMapping("/events")
+    @PostMapping()
     public String createPOST(@RequestParam String name,
                              @RequestParam String imageUrl,
                              @RequestParam EventType venueType,
@@ -84,7 +84,7 @@ public class VenuesController {
         types.add(EventType.NIGHTCLUB);
         types.add(EventType.CONCERT);
         types.add(EventType.CINEMA);
-        types.add(EventType.SHOW);
+
         types.add(EventType.LIVE_MUSIC);
         if(this.venueService.findById(id).isPresent())
         {

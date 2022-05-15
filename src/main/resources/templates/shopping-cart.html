@@ -34,7 +34,7 @@
                         <th scope="col">Location</th>
                         <th scope="col">Event Type</th>
                         <th scope="col">Price</th>
-                        <th scope="col">Actions</th>
+                        <th class="text-center" scope="col">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -48,10 +48,10 @@
                         <td th:text="${event.getPrice()}"></td>
 <!--                        <td th:text="${event.getManufacturer() !=null} ? ${product.getManufacturer().getName()}: 'No Manufacturer!'"></td>-->
 <!--                        <td th:text="${event.getCategory() != null} ? ${product.getCategory().getName()} : 'No Category!'"></td>-->
-                        <td>
+                        <td class="text-center">
                             <form th:method="POST" th:action="@{'/shopping-cart/buy/{id}' (id=${event.getId()})}">
-                                <input type="number" name="quantity" placeholder="1">
-                                <button type="submit" class="btn btn-success">Buy Ticket </button>
+                                <input class="form-control  w-25 m-auto" type="number" name="quantity" placeholder="1">
+                                <button type="submit" class="btn btn-success mt-2">Buy Ticket </button>
                             </form>
                             <form th:method="DELETE" th:action="@{'/shopping-cart/delete/{id}' (id=${event.getId()})}">
                             <button type="submit" class="btn btn-danger">Remove </button>

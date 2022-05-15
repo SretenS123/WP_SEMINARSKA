@@ -10,13 +10,15 @@ import com.example.seminarksa_wp.repository.EventRepository;
 import com.example.seminarksa_wp.repository.UserRepository;
 import com.example.seminarksa_wp.repository.VenueRepository;
 import com.example.seminarksa_wp.service.EventService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 @Service
 public class EventServiceImpl implements EventService {
 
@@ -32,6 +34,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> listAll() {
+        log.info("Listing All Events!");
         return this.eventRepository.findAll();
 
     }
@@ -51,13 +54,16 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> findAllBySearchKey(String searchKey) {
-        return this.eventRepository.findAllByTitleLike('%' + searchKey + '%');
+        log.info("Listing all Events By searchKey: %s",searchKey);
+        return this.eventRepository.findByTitleContainingOrderByDate(searchKey);
+
     }
 
     @Override
     public Event create(String title, String description, String imageUrl, EventType eventType, LocalDate date, Long venueId,Integer price,Integer ticketsLeft) {
         Venue venue  = this.venueRepository.findById(venueId).orElseThrow(()->new VenueIdNotExistException(venueId));
         Event event = new Event(title,description,imageUrl,eventType,date,venue,price,ticketsLeft);
+        log.info("Creatng Event with title %s",title);
         return this.eventRepository.save(event);
     }
 
@@ -84,7 +90,7 @@ public class EventServiceImpl implements EventService {
         event.setDate(date);
         event.setPrice(price);
         event.setTicketsLeft(ticketsLeft);
-
+        log.info("We are editing Event with id %d",id);
         return this.eventRepository.save(event);
     }
 //    @Override

@@ -11,5 +11,4 @@ public enum EventType {
     CONCERT,
     THEATRE,
     CINEMA,
-    SHOW
 }

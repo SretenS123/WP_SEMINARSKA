@@ -24,7 +24,8 @@
                             <th scope="col">Event type</th>
                             <th scope="col">Email Of User</th>
                             <th scope="col">Ticket Code</th>
-                            <th scope="col">Price paid</th>
+                            <th scope="col">Cost of Ticket</th>
+
                         </tr>
                         </thead>
                         <tbody>
@@ -34,7 +35,8 @@
                             <td th:text="${ticket.getEvent().getEventType()}"></td>
                             <td th:text="${ticket.getUser().getEmail()}"></td>
                             <td th:text="${ticket.getRandomCode()}"></td>
-                            <td th:text="${ticket.getPrice()}"></td>
+                            <td th:text="${ticket.getPrice()+' $'}"></td>
+
                             <!--                        <td th:text="${event.getManufacturer() !=null} ? ${product.getManufacturer().getName()}: 'No Manufacturer!'"></td>-->
                             <!--                        <td th:text="${event.getCategory() != null} ? ${product.getCategory().getName()} : 'No Category!'"></td>-->
 
@@ -45,6 +47,11 @@
                 </div>
             </div>
 
+        </div>
+        <div class="row">
+            <div class="col-md-12 bg-success">
+                <p style="color: white;text-align:right;font-size: 25px;" th:text="${'PRICE PAID:  '+ price+ ' $'}"></p>
+            </div>
         </div>
 
     </div>

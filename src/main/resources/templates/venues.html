@@ -2,9 +2,14 @@
 
 
     <!--SECTION-->
-    <section id="jumbotron_venues" class="jumbotron text-center"  xmlns:th="http://www.thymeleaf.org" >
+    <section id="jumbotron-venues" class="jumbotron text-center"  xmlns:th="http://www.thymeleaf.org" >
         <div  class="container">
-            <h1 class="jumbotron-heading" >ALL VENUES</h1>
+            <div class="row">
+                <div class="col-md-6 m-auto ">
+                    <h1 style="background-color: lightcoral;color: white;padding: 2%; border-radius: 50%;" >ALL VENUES</h1>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -27,8 +32,8 @@
                         <!--                            <li class="list-group-item">Vestibulum at eros</li>-->
                         <!--                        </ul>-->
                         <div class="card-body" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')">
-                            <a th:href="@{'/venues/edit/{Id}' (Id=${venue.getId()})}" class="card-link btn btn-md btn-info">Edit</a>
-                            <a th:href="@{'/venues/delete/{Id}' (Id=${venue.getId()})}" class="card-link btn btn-md btn-danger">Delete</a>
+                            <a th:href="@{'/venues/edit/{Id}' (Id=${venue.getId()})}" class="card-link btn btn-md btn-info"><i class="fas fa-edit"></i></a>
+                            <a th:href="@{'/venues/delete/{Id}' (Id=${venue.getId()})}" class="card-link btn btn-md btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
                         </div>
                     </div>
 
@@ -37,10 +42,10 @@
             </th:block>
 
         </div>
-        <div class="col my-3">
+        <div class="col my-3 mt-5">
             <div class="row">
-                <div class="col-sm-12 col-md-12" >
-                    <a type="button" href="/venue/add" class="btn btn-block btn-dark">Add new venue</a>
+                <div class="col-sm-12 col-md-12 " >
+                    <a type="button" href="/venues/add" class="btn btn-block btn-danger">Add new venue</a>
                 </div>
             </div>
         </div>

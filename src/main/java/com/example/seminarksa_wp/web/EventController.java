@@ -1,11 +1,15 @@
 package com.example.seminarksa_wp.web;
 
 import com.example.seminarksa_wp.model.Event;
-import com.example.seminarksa_wp.model.Venue;
+import com.example.seminarksa_wp.model.Rating;
+import com.example.seminarksa_wp.model.User;
 import com.example.seminarksa_wp.model.enumerations.EventType;
-import com.example.seminarksa_wp.model.exceptions.VenueIdNotExistException;
+import com.example.seminarksa_wp.model.exceptions.EventIdNotExistException;
 import com.example.seminarksa_wp.service.EventService;
+import com.example.seminarksa_wp.service.RatingService;
 import com.example.seminarksa_wp.service.VenueService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/events")
@@ -21,14 +24,15 @@ public class EventController {
 
     private final EventService eventService;
     private final VenueService venueService;
+    private final RatingService ratingService;
 
-    public EventController(EventService eventService, VenueService venueService) {
+    public EventController(EventService eventService, VenueService venueService, RatingService ratingService) {
         this.eventService = eventService;
         this.venueService = venueService;
+        this.ratingService = ratingService;
     }
 
-    @GetMapping
-
+    @GetMapping("")
     public String getAllEventsPage(@RequestParam(required = false) String error ,
                                    @RequestParam(required = false) String type,
                                    @RequestParam(required = false) String searchKey,
@@ -39,13 +43,11 @@ public class EventController {
             model.addAttribute("hasError",true);
             model.addAttribute("error",error);
         }
-        List<Event> eventList = null;
-        if(type!= null && !type.isEmpty() && searchKey!=null && !searchKey.isEmpty())
-            eventList = this.eventService.findAllByEventTypeAndSearchKey(type,searchKey);
-        else if (type!= null && !type.isEmpty() && searchKey==null)
+        List<Event> eventList = new ArrayList<>();
+         if (type!= null && !type.isEmpty() && searchKey==null)
             eventList = this.eventService.findAllByEventType(type);
         else if(searchKey!=null && !searchKey.isEmpty() && type== null )
-            eventList = this.eventService.findAllBySearchKey(searchKey);
+            eventList = this.eventService.findAllBySearchKey(searchKey.toString());
         else
             eventList = this.eventService.listAll();
 
@@ -66,7 +68,7 @@ public class EventController {
         types.add(EventType.NIGHTCLUB);
         types.add(EventType.CONCERT);
         types.add(EventType.CINEMA);
-        types.add(EventType.SHOW);
+
         types.add(EventType.LIVE_MUSIC);
         model.addAttribute("bodyContent","addEvent");
         model.addAttribute("types",types);
@@ -99,7 +101,7 @@ public class EventController {
         types.add(EventType.NIGHTCLUB);
         types.add(EventType.CONCERT);
         types.add(EventType.CINEMA);
-        types.add(EventType.SHOW);
+
         types.add(EventType.LIVE_MUSIC);
         if(this.eventService.findById(id).isPresent())
         {
@@ -133,6 +135,26 @@ public class EventController {
     {
         this.eventService.deleteById(Id);
         return "redirect:/events";
+    }
+
+    @GetMapping("/{id}/ratings")
+    public String getRatingFromEvent(@PathVariable Long id,
+                                     Model model){
+        Event event = this.eventService.findById(id).orElseThrow(()->new EventIdNotExistException(id));
+        List<Rating> ratings = this.ratingService.listAllByEvent(id);
+        model.addAttribute("eventId",id);
+        model.addAttribute("event",event);
+        model.addAttribute("ratings",ratings);
+        model.addAttribute("bodyContent","ratings");
+        return "master-template";
+    }
+    @PostMapping("/{id}/ratings")
+    public String createRatingFromEvent(@RequestParam String tekst,
+                                        @RequestParam Long id,
+                                        Authentication authentication){
+        User user = (User) authentication.getPrincipal();
+        Rating rating = this.ratingService.create(tekst, user.getId(), id);
+        return "redirect:/events/{id}/ratings";
     }
 
 
